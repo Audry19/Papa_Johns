@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Papa John's | Table Menu</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="logo-wrap">
+      <div class="logo-svg">
+        <!-- Inline SVG logo -->
+        <svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+          <rect width="120" height="60" rx="8" fill="#006241"/>
+          <text x="60" y="24" text-anchor="middle" font-family="Bebas Neue, sans-serif" font-size="14" fill="#fff" letter-spacing="1">PAPA JOHN'S</text>
+          <rect x="15" y="30" width="90" height="2" fill="#CC0000"/>
+          <text x="60" y="46" text-anchor="middle" font-family="Nunito, sans-serif" font-size="9" fill="#f8c000" font-weight="800" letter-spacing="2">BETTER INGREDIENTS</text>
+        </svg>
+      </div>
+    </div>
+  </header>
+
+  <!-- PIZZA INFO TOP -->
+  <section class="pizza-info">
+    <p class="pizza-label">TODAY'S FEATURE</p>
+    <h1 class="pizza-name" id="pizza-name">The Works</h1>
+    <p class="pizza-ingredients" id="pizza-ingredients">Pepperoni · Sausage · Mushrooms · Green Peppers · Onions · Black Olives</p>
+  </section>
+
+  <!-- PIZZA STAGE -->
+  <section class="pizza-stage">
+    <div class="pizza-shadow"></div>
+    <div class="pizza-orbit" id="pizza-orbit">
+      <div class="pizza-wrapper">
+        <img class="pizza-img" id="pizza-img" src="" alt="Pizza" />
+      </div>
+    </div>
+
+    <!-- Badge -->
+    <div class="badge" id="pizza-badge">BESTSELLER</div>
+  </section>
+
+  <!-- BOTTOM -->
+  <section class="bottom">
+    <div class="price-row">
+      <span class="price-label">Starting from</span>
+      <span class="price" id="pizza-price">$13.99</span>
+    </div>
+    <button class="switch-btn" id="switch-btn" onclick="switchPizza()">
+      <span class="btn-icon">🍕</span>
+      <span>Switch Pizza</span>
+      <span class="btn-arrow">→</span>
+    </button>
+    <p class="scan-note">Scan table QR to order online</p>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>

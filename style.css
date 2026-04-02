@@ -1,0 +1,349 @@
+/* =============================================
+   PAPA JOHN'S — TABLE MENU
+   ============================================= */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --green:    #006241;
+  --red:      #CC0000;
+  --gold:     #f8c000;
+  --white:    #FFFFFF;
+  --cream:    #FFF8F0;
+  --gray:     #555;
+  --shadow:   rgba(0,0,0,0.18);
+}
+
+html, body {
+  height: 100%;
+  background: var(--cream);
+  font-family: 'Nunito', sans-serif;
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  max-width: 480px;
+  margin: 0 auto;
+  background:
+    radial-gradient(ellipse at top, #fff5e4 0%, var(--cream) 70%);
+}
+
+/* ---- BACKGROUND PATTERN ---- */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 40px,
+      rgba(0,98,65,0.03) 40px,
+      rgba(0,98,65,0.03) 41px
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ---- HEADER ---- */
+.header {
+  position: relative;
+  z-index: 2;
+  padding: 18px 20px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-svg svg {
+  width: 160px;
+  height: 80px;
+  filter: drop-shadow(0 4px 12px rgba(0,98,65,0.3));
+}
+
+/* ---- PIZZA INFO ---- */
+.pizza-info {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 8px 24px 0;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.pizza-info.fade-out {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.pizza-label {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  color: var(--red);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.pizza-name {
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(42px, 12vw, 64px);
+  color: var(--green);
+  line-height: 1;
+  letter-spacing: 2px;
+  text-shadow: 2px 3px 0 rgba(0,98,65,0.12);
+}
+
+.pizza-ingredients {
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--gray);
+  font-weight: 600;
+  line-height: 1.6;
+  max-width: 300px;
+  margin-inline: auto;
+}
+
+/* ---- PIZZA STAGE ---- */
+.pizza-stage {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0 10px;
+  perspective: 900px;
+}
+
+/* Ellipse shadow under pizza */
+.pizza-shadow {
+  position: absolute;
+  bottom: 14%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 62%;
+  height: 28px;
+  background: radial-gradient(ellipse, rgba(0,0,0,0.22) 0%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(6px);
+  animation: shadowPulse 3s ease-in-out infinite;
+  z-index: 0;
+}
+
+@keyframes shadowPulse {
+  0%, 100% { transform: translateX(-50%) scaleX(1); opacity: 0.7; }
+  50%       { transform: translateX(-50%) scaleX(0.88); opacity: 0.45; }
+}
+
+/* 3D orbit tilt container */
+.pizza-orbit {
+  position: relative;
+  z-index: 1;
+  transform-style: preserve-3d;
+  /* 45-deg tilt for pseudo-3D plate look */
+  transform: rotateX(45deg);
+  animation: float3d 3s ease-in-out infinite;
+}
+
+@keyframes float3d {
+  0%, 100% { transform: rotateX(45deg) translateY(0px); }
+  50%       { transform: rotateX(45deg) translateY(-14px); }
+}
+
+/* Spin wrapper — continuous spin */
+.pizza-wrapper {
+  width: clamp(220px, 68vw, 320px);
+  height: clamp(220px, 68vw, 320px);
+  animation: spin 18s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.pizza-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  box-shadow:
+    0 20px 50px rgba(0,0,0,0.28),
+    0 0 0 6px rgba(255,255,255,0.9),
+    0 0 0 10px var(--gold),
+    inset 0 0 30px rgba(0,0,0,0.08);
+  display: block;
+  transition: opacity 0.4s ease;
+}
+
+.pizza-img.fading {
+  opacity: 0;
+}
+
+/* Floating badge */
+.badge {
+  position: absolute;
+  top: 12%;
+  right: 14%;
+  background: var(--red);
+  color: var(--white);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  padding: 5px 10px;
+  border-radius: 20px;
+  transform: rotate(12deg);
+  box-shadow: 0 4px 12px rgba(204,0,0,0.4);
+  animation: badgePop 2.5s ease-in-out infinite;
+  z-index: 5;
+}
+
+@keyframes badgePop {
+  0%, 100% { transform: rotate(12deg) scale(1); }
+  50%       { transform: rotate(12deg) scale(1.08); }
+}
+
+/* ---- BOTTOM ---- */
+.bottom {
+  position: relative;
+  z-index: 2;
+  padding: 16px 24px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.price-label {
+  font-size: 12px;
+  color: var(--gray);
+  font-weight: 600;
+}
+
+.price {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 36px;
+  color: var(--green);
+  letter-spacing: 1px;
+  transition: opacity 0.3s;
+}
+
+.price.fade-out { opacity: 0; }
+
+/* SWITCH BUTTON */
+.switch-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 340px;
+  padding: 18px 24px;
+  background: linear-gradient(135deg, var(--red) 0%, #aa0000 100%);
+  color: var(--white);
+  border: none;
+  border-radius: 60px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  box-shadow:
+    0 8px 24px rgba(204,0,0,0.45),
+    0 2px 0 rgba(0,0,0,0.2);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+.switch-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, transparent 60%);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.switch-btn:active {
+  transform: scale(0.95) translateY(2px);
+  box-shadow: 0 4px 12px rgba(204,0,0,0.4), 0 0 0 rgba(0,0,0,0);
+}
+
+.btn-icon { font-size: 22px; }
+.btn-arrow {
+  font-size: 20px;
+  transition: transform 0.2s;
+}
+.switch-btn:active .btn-arrow { transform: translateX(4px); }
+
+/* Ripple effect on button */
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.35);
+  transform: scale(0);
+  animation: ripple-anim 0.5s linear;
+  pointer-events: none;
+}
+@keyframes ripple-anim {
+  to { transform: scale(4); opacity: 0; }
+}
+
+.scan-note {
+  font-size: 11px;
+  color: #aaa;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* ---- TRANSITION OVERLAY ---- */
+.transition-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--red);
+  z-index: 100;
+  pointer-events: none;
+  clip-path: circle(0% at 50% 100%);
+  transition: clip-path 0.45s cubic-bezier(0.77,0,0.18,1);
+}
+.transition-overlay.active {
+  clip-path: circle(150% at 50% 100%);
+}
+
+/* ---- ENTRANCE ANIMATION ---- */
+.header, .pizza-info, .pizza-stage, .bottom {
+  animation: fadeUp 0.6s ease both;
+}
+.header       { animation-delay: 0.1s; }
+.pizza-info   { animation-delay: 0.2s; }
+.pizza-stage  { animation-delay: 0.3s; }
+.bottom       { animation-delay: 0.4s; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Safe area bottom on iOS */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .bottom { padding-bottom: calc(32px + env(safe-area-inset-bottom)); }
+}
