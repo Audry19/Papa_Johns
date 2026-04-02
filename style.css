@@ -1,115 +1,292 @@
 /* =============================================
-   PAPA JOHN'S — TABLE MENU SCRIPT
-   To add more pizzas: push a new object to the
-   PIZZAS array below. That's it.
+   PAPA JOHN'S — TABLE MENU
    ============================================= */
 
-const PIZZAS = [
-  {
-    name:        "The Works",
-    ingredients: "Pepperoni · Sausage · Mushrooms · Green Peppers · Onions · Black Olives",
-    price:       "AED 49.99",
-    badge:       "BESTSELLER",
-    img:         "images/pizza1.jpg",
-  },
-  {
-    name:        "Garden Fresh",
-    ingredients: "Spinach · Tomatoes · Red Onion · Banana Peppers · Roasted Garlic · Feta",
-    price:       "AED 44.99",
-    badge:       "VEGGIE",
-    img:         "images/pizza2.jpg",
-  },
-  {
-    name:        "Spicy Inferno",
-    ingredients: "Double Pepperoni · Jalapeños · Banana Peppers · Hot Sauce · Mozzarella",
-    price:       "AED 54.99",
-    badge:       "🔥 HOT",
-    img:         "images/pizza3.jpg",
-  },
-];
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-let current = 0;
-let isAnimating = false;
-
-const elName        = document.getElementById('pizza-name');
-const elIngredients = document.getElementById('pizza-ingredients');
-const elImg         = document.getElementById('pizza-img');
-const elBadge       = document.getElementById('pizza-badge');
-const elPrice       = document.getElementById('pizza-price');
-const elInfo        = document.querySelector('.pizza-info');
-const elBtn         = document.getElementById('switch-btn');
-
-/* ---------- INIT ---------- */
-function init() {
-  const p = PIZZAS[current];
-  elImg.src         = p.img;
-  elName.textContent        = p.name;
-  elIngredients.textContent = p.ingredients;
-  elBadge.textContent       = p.badge;
-  elPrice.textContent       = p.price;
+:root {
+  --green:  #006241;
+  --red:    #CC0000;
+  --gold:   #f8c000;
+  --white:  #FFFFFF;
+  --cream:  #FFF8F0;
+  --gray:   #666;
 }
 
-/* ---------- SWITCH ---------- */
-function switchPizza() {
-  if (isAnimating) return;
-  isAnimating = true;
-
-  const next = (current + 1) % PIZZAS.length;
-  const p    = PIZZAS[next];
-
-  // Button ripple
-  addRipple(elBtn, event);
-
-  // Fade info out
-  elInfo.classList.add('fade-out');
-  elPrice.classList.add('fade-out');
-
-  // Fade pizza image out
-  elImg.classList.add('fading');
-
-  setTimeout(() => {
-    // Swap content
-    elName.textContent        = p.name;
-    elIngredients.textContent = p.ingredients;
-    elBadge.textContent       = p.badge;
-    elPrice.textContent       = p.price;
-
-    elImg.src = '';
-    elImg.src = p.img;
-    elImg.onload = () => {
-      elImg.classList.remove('fading');
-    };
-
-    // Fade info back in
-    elInfo.classList.remove('fade-out');
-    elPrice.classList.remove('fade-out');
-
-    current = next;
-
-    setTimeout(() => { isAnimating = false; }, 300);
-  }, 380);
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
 }
 
-/* ---------- RIPPLE EFFECT ---------- */
-function addRipple(btn, e) {
-  const rect   = btn.getBoundingClientRect();
-  const size   = Math.max(rect.width, rect.height);
-  const x      = (e && e.clientX ? e.clientX : rect.left + rect.width / 2)  - rect.left - size / 2;
-  const y      = (e && e.clientY ? e.clientY : rect.top  + rect.height / 2) - rect.top  - size / 2;
-  const ripple = document.createElement('span');
-  ripple.className = 'ripple';
-  ripple.style.cssText = `width:${size}px;height:${size}px;left:${x}px;top:${y}px`;
-  btn.appendChild(ripple);
-  ripple.addEventListener('animationend', () => ripple.remove());
+body {
+  font-family: 'Nunito', sans-serif;
+  background: linear-gradient(160deg, #fff8f0 0%, #ffe8d6 100%);
+  min-height: 100dvh;
+  max-width: 430px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
 }
 
-/* ---------- PRELOAD NEXT IMAGE ---------- */
-function preloadNext() {
-  const nextIdx = (current + 1) % PIZZAS.length;
-  const img = new Image();
-  img.src = PIZZAS[nextIdx].img;
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    45deg, transparent, transparent 38px,
+    rgba(0,98,65,0.03) 38px, rgba(0,98,65,0.03) 39px
+  );
+  pointer-events: none;
+  z-index: 0;
 }
 
-/* ---------- START ---------- */
-init();
-setTimeout(preloadNext, 1000);
+/* ---- HEADER ---- */
+.header {
+  position: relative;
+  z-index: 2;
+  padding: 14px 20px 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo-wrap { display: flex; justify-content: center; }
+
+.logo-img img {
+  width: 90px;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 3px 8px rgba(0,98,65,0.25));
+}
+
+/* ---- PIZZA INFO ---- */
+.pizza-info {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 2px 20px 0;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+.pizza-info.fade-out { opacity: 0; transform: translateY(-8px); }
+
+.pizza-label {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  color: var(--red);
+  text-transform: uppercase;
+  margin-bottom: 3px;
+}
+
+.pizza-name {
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(34px, 9vw, 48px);
+  color: var(--green);
+  line-height: 1;
+  letter-spacing: 2px;
+}
+
+.pizza-ingredients {
+  margin-top: 5px;
+  font-size: 11.5px;
+  color: var(--gray);
+  font-weight: 600;
+  line-height: 1.5;
+  max-width: 270px;
+  margin-inline: auto;
+}
+
+/* ---- PIZZA STAGE ---- */
+.pizza-stage {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 0 6px;
+  perspective: 800px;
+}
+
+.pizza-shadow {
+  position: absolute;
+  bottom: 12%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 52%;
+  height: 20px;
+  background: radial-gradient(ellipse, rgba(0,0,0,0.2) 0%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(5px);
+  animation: shadowPulse 3s ease-in-out infinite;
+  z-index: 0;
+}
+@keyframes shadowPulse {
+  0%,100% { transform: translateX(-50%) scaleX(1);    opacity: 0.7; }
+  50%      { transform: translateX(-50%) scaleX(0.87); opacity: 0.38; }
+}
+
+.pizza-orbit {
+  position: relative;
+  z-index: 1;
+  transform-style: preserve-3d;
+  transform: rotateX(42deg);
+  animation: float3d 3s ease-in-out infinite;
+}
+@keyframes float3d {
+  0%,100% { transform: rotateX(42deg) translateY(0px);   }
+  50%      { transform: rotateX(42deg) translateY(-11px); }
+}
+
+.pizza-wrapper {
+  width: clamp(175px, 52vw, 240px);
+  height: clamp(175px, 52vw, 240px);
+  animation: spin 18s linear infinite;
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.pizza-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  box-shadow:
+    0 14px 36px rgba(0,0,0,0.24),
+    0 0 0 5px rgba(255,255,255,0.9),
+    0 0 0 9px var(--gold);
+  display: block;
+  transition: opacity 0.35s ease;
+}
+.pizza-img.fading { opacity: 0; }
+
+.badge {
+  position: absolute;
+  top: 10%;
+  right: 10%;
+  background: var(--red);
+  color: var(--white);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  padding: 4px 9px;
+  border-radius: 20px;
+  transform: rotate(12deg);
+  box-shadow: 0 3px 10px rgba(204,0,0,0.4);
+  animation: badgePop 2.5s ease-in-out infinite;
+  z-index: 5;
+}
+@keyframes badgePop {
+  0%,100% { transform: rotate(12deg) scale(1);    }
+  50%      { transform: rotate(12deg) scale(1.08); }
+}
+
+/* ---- BOTTOM ---- */
+.bottom {
+  position: relative;
+  z-index: 2;
+  padding: 10px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 11px;
+}
+
+.price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+}
+.price-label {
+  font-size: 11px;
+  color: var(--gray);
+  font-weight: 600;
+}
+.price {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 28px;
+  color: var(--green);
+  letter-spacing: 1px;
+  transition: opacity 0.3s;
+}
+.price.fade-out { opacity: 0; }
+
+/* BUTTON */
+.switch-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 300px;
+  padding: 14px 24px;
+  background: linear-gradient(135deg, var(--red) 0%, #aa0000 100%);
+  color: var(--white);
+  border: none;
+  border-radius: 50px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(204,0,0,0.38), 0 2px 0 rgba(0,0,0,0.12);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+  overflow: hidden;
+}
+.switch-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.13) 0%, transparent 55%);
+  border-radius: inherit;
+  pointer-events: none;
+}
+.switch-btn:active {
+  transform: scale(0.95) translateY(2px);
+  box-shadow: 0 3px 10px rgba(204,0,0,0.32);
+}
+.btn-icon  { font-size: 18px; }
+.btn-arrow { font-size: 17px; transition: transform 0.2s; }
+.switch-btn:active .btn-arrow { transform: translateX(4px); }
+
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  transform: scale(0);
+  animation: ripple-anim 0.5s linear;
+  pointer-events: none;
+}
+@keyframes ripple-anim { to { transform: scale(4); opacity: 0; } }
+
+.scan-note {
+  font-size: 10px;
+  color: #bbb;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* ---- ENTRANCE ---- */
+.header, .pizza-info, .pizza-stage, .bottom {
+  animation: fadeUp 0.5s ease both;
+}
+.header      { animation-delay: 0.05s; }
+.pizza-info  { animation-delay: 0.15s; }
+.pizza-stage { animation-delay: 0.25s; }
+.bottom      { animation-delay: 0.35s; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .bottom { padding-bottom: calc(24px + env(safe-area-inset-bottom)); }
+}
