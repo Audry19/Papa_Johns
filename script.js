@@ -10,21 +10,21 @@ const PIZZAS = [
     ingredients: "Pepperoni · Sausage · Mushrooms · Green Peppers · Onions · Black Olives",
     price:       "AED 49.99",
     badge:       "BESTSELLER",
-    img:         "images/pizza1.jpg",
+    img:         "images/pizza1.png",
   },
   {
     name:        "Garden Fresh",
     ingredients: "Spinach · Tomatoes · Red Onion · Banana Peppers · Roasted Garlic · Feta",
     price:       "AED 44.99",
     badge:       "VEGGIE",
-    img:         "images/pizza2.jpg",
+    img:         "images/pizza2.png",
   },
   {
     name:        "Spicy Inferno",
     ingredients: "Double Pepperoni · Jalapeños · Banana Peppers · Hot Sauce · Mozzarella",
     price:       "AED 54.99",
     badge:       "🔥 HOT",
-    img:         "images/pizza3.jpg",
+    img:         "images/pizza3.png",
   },
 ];
 
